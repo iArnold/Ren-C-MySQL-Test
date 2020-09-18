@@ -1,0 +1,7 @@
+REBOL [Title: "Return environment variable"
+       File: %read-environment.renc
+]
+
+db-environment: "test"
+;debug: false
+debug: true

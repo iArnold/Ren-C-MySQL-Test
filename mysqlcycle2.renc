@@ -1,0 +1,35 @@
+#!/var/www/vhosts/arnoldvanhofwegen.com/cgi-bin/renc -c
+
+REBOL [Title: "Testcycle Ren-C MySQL step two"
+       Author: "Arnold van Hofwegen Copyright 2020"
+       file: %mysqlcycle2.renc
+]
+
+print "Content-type: text/html^/"
+
+; Get environment variable
+db-environment: null
+do %read-environment.renc
+
+print spaced ["Ren-C MySQL environment" db-environment "step 2"]
+
+; Make database connection
+do %../../lib/renc/dbconnect.renc
+
+query-text: {INSERT INTO `renc_mysql_test` (`ID`, `name`, `address`, `property`, `grade`, `since`, `time_to`, `registered`) VALUES
+(1, 'Spiderman', 'NY-City', 'Mighty', '22.36', '2020-08-16 13:54:11', '00:00:00', 1),
+(2, 'Superman', 'Northpole', 'Super', '0.01', '2020-08-16 13:54:11', '00:00:00', 0),
+(3, 'Superwoman', NULL, 'Super', '8.10', '2020-08-16 13:54:11', '00:00:00', NULL),
+(4, 'Batman', NULL, 'Super', '0.00', '0000-00-00 13:54:11', '00:00:00', NULL)} 
+mysql-query dbhandle query-text
+print "<br />"
+print "Query successfully executed"
+
+num-rows: mysql-affected-rows dbhandle
+
+print spaced ["<br />Records renc_mysql_test inserted:" num-rows]
+
+print {<br />Go to the next step: <a href="mysqlcycle3.renc">Show inserted Records</a>.}
+
+; End database connection
+db-disconnect

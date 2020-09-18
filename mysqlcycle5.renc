@@ -1,0 +1,38 @@
+#!/var/www/vhosts/arnoldvanhofwegen.com/cgi-bin/renc -c
+
+REBOL [Title: "Testcycle Ren-C MySQL step five"
+       Author: "Arnold van Hofwegen Copyright 2020"
+       file: %mysqlcycle5.renc
+]
+
+print "Content-type: text/html^/"
+
+; Get environment variable
+db-environment: null
+do %read-environment.renc
+
+print spaced ["Ren-C MySQL environment" db-environment "step 5"]
+
+; Make database connection
+do %../../lib/renc/dbconnect.renc
+
+query-text: {SELECT * FROM `renc_mysql_test`} 
+mysql-query dbhandle query-text
+print "<br />"
+print "Query successfully executed"
+
+result: mysql-store-result dbhandle
+num-rows: mysql-num-rows result
+
+print spaced ["<br />Records renc_mysql_test selected:" num-rows]
+
+fields: mysql-fetch-fields result
+
+do %format-print-tables.renc
+
+mysql-free-result result
+
+print {<br />Go to the next step: <a href="mysqlcycle6.renc">Delete some records</a>.}
+
+; End database connection
+db-disconnect

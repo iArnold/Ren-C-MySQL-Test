@@ -1,0 +1,44 @@
+#!/var/www/vhosts/arnoldvanhofwegen.com/cgi-bin/renc -c
+
+REBOL [Title: "Testcycle Ren-C MySQL step one"
+       Author: "Arnold van Hofwegen Copyright 2020"
+       file: %mysqlcycle1.renc
+]
+
+print "Content-type: text/html^/"
+
+; Get environment variable
+db-environment: null
+do %read-environment.renc
+
+print spaced ["Ren-C MySQL environment" db-environment "step 1"]
+
+; Make database connection
+do %../../lib/renc/dbconnect.renc
+
+; Drop the test table!
+mysql-query dbhandle "DROP TABLE renc_mysql_test"
+print "Database table dropped"
+
+; Create a test table
+query-text: {CREATE TABLE `renc_mysql_test` (
+  `ID` int(4) NOT NULL,
+  `name` varchar(20) NOT NULL,
+  `address` varchar(20) DEFAULT NULL,
+  `property` varchar(20) NOT NULL,
+  `grade` decimal(10,2) NOT NULL,
+  `since` datetime NOT NULL DEFAULT current_timestamp(),
+  `time_to` time NOT NULL,
+  `registered` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='MySQL test table'}
+
+mysql-query dbhandle query-text
+print "<br />Database table renc_mysql_test created"
+
+; 
+
+
+print {<br />Go to the next step: <a href="mysqlcycle2.renc">Insert Records</a>.}
+
+; End database connection
+db-disconnect

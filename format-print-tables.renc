@@ -1,0 +1,29 @@
+REBOL [Title: "Pretty display the tables with retrieved records"
+       File: %format-print-tables.renc
+]
+
+print {<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+</style>
+<table ><tr>}
+
+for-each field fields [
+    print ["<th>" first field "<br />" field/5 "<br />" field/6 "</th>"]
+]
+
+print "</tr>"
+
+until [
+    row: mysql-fetch-row result
+    print "<tr>"
+    for-each item row [
+        print ["<td>" either item [item]["NULL"] "</td>"]
+    ]
+    print "</tr>"
+    empty? row
+]
+
+print "</table>"

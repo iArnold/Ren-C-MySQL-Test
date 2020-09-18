@@ -1,0 +1,31 @@
+#!/var/www/vhosts/arnoldvanhofwegen.com/cgi-bin/renc -c
+
+REBOL [Title: "Testcycle Ren-C MySQL step six"
+       Author: "Arnold van Hofwegen Copyright 2020"
+       file: %mysqlcycle6.renc
+]
+
+print "Content-type: text/html^/"
+
+; Get environment variable
+db-environment: null
+do %read-environment.renc
+
+print spaced ["Ren-C MySQL environment" db-environment "step 6"]
+
+; Make database connection
+do %../../lib/renc/dbconnect.renc
+
+query-text: {DELETE FROM renc_mysql_test WHERE name LIKE 'Super%'}
+mysql-query dbhandle query-text
+print "<br />"
+print "Query successfully executed"
+
+num-rows: mysql-affected-rows dbhandle
+
+print spaced ["<br />Records renc_mysql_test deleted:" num-rows]
+
+print {<br />Go to the next step: <a href="mysqlcycle7.renc">Show remaining Records</a>.}
+
+; End database connection
+db-disconnect

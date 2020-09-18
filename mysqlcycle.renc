@@ -1,0 +1,43 @@
+#!/var/www/vhosts/arnoldvanhofwegen.com/cgi-bin/renc -c
+
+REBOL [Title: "Testcycle Ren-C MySQL start"
+       Author: "Arnold van Hofwegen Copyright 2020"
+       file: %mysqlcycle.renc
+]
+
+print "Content-type: text/html^/"
+
+; Get environment variable
+db-environment: null
+do %read-environment.renc
+
+print spaced ["Ren-C MySQL environment" db-environment "start"]
+
+print {<br />
+This is the testcyclus for testing various MySQL functions build for Ren-C.
+<br />
+<br />
+This script is divided into distinct steps, so the intermediate results can be inspected in the database.
+<br />
+<br />
+Step 1 - It will create a table called renc_mysql_test in your database.
+<br />
+Step 2 - Insert records in the new table.
+<br />
+Step 3 - Show the new records.
+<br />
+Step 4 - Update some records.
+<br />
+Step 5 - Show the records.
+<br />
+Step 6 - Delete some records.
+<br />
+Step 7 - Show the remaining records.
+<br />
+<br />
+You can check the database set up before continuing.
+<br /><br />
+Go to the next step: <a href="mysqlcycle1.renc">Create table</a>.
+}
+
+
