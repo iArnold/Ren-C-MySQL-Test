@@ -1,0 +1,8 @@
+REBOL [Title: "Connection settings for test db"
+       File: %dbconnection-test.renc
+]
+
+dbhost: "localhost"
+dbuser: "user"
+dbpswd: "P@ssw0rd"
+dbdbnm: "yourdb"
