@@ -1,0 +1,32 @@
+REBOL[Title: "DB Connect script tbv MySQL database"]
+
+date-to-epoch: func [
+        "Return date in unix time format from a date in REBOL format"
+        rebol-date [date!] "Date in REBOL time format"
+    ][
+        if rebol-date/time = null [ 
+            rebol-date: to-date rejoin [rebol-date "/00:00:00"] 
+        ]
+        ;print [rebol-date]
+        rebol-date: rebol-date - now/zone
+        ;print [rebol-date]
+        return to-integer (rebol-date - 1-Jan-1970 * 86400) + 
+        (rebol-date/time/hour * 3600) + 
+        (rebol-date/time/minute * 60) + rebol-date/time/second
+    ]
+
+if db-environment = null [db-environment: "test" debug: true]
+
+do to-file unspaced ["dbconnection-" db-environment ".renc"]
+
+dbhandle: mysql-connect dbhost dbuser dbpswd dbdbnm
+if debug [print "DB handle geopend!"]
+
+db-disconnect: does [
+    mysql-close dbhandle
+    if debug [print "DB handle closed!"]
+]
+
+db-query: func [query [text!]][
+    mysql-query dbhandle query
+]
